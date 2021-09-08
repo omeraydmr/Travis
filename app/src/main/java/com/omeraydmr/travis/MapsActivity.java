@@ -1,7 +1,12 @@
 package com.omeraydmr.travis;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,6 +47,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        //casting
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                System.out.println("Location : " + location.toString());
+            }
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                //needed for uncrushed position
+            }
+        };
 
         //latitude -> enlem , longitude -> boylam
         //LatLng
