@@ -9,17 +9,20 @@ import com.omeraydmr.travis.model.Place;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+
 @Dao
 public interface PlaceDao {
 
     @Insert
-    void insert(Place place);
+    Completable insert(Place place);
 
     @Delete
-    void delete(Place place);
+    Completable delete(Place place);
 
-    @Query("SELECT * FROM Place WHERE name = :nameinput")
-    List<Place> getAll(String nameinput);
+    @Query("SELECT * FROM Place")
+    Flowable<List<Place>> getAll();
 
 
 }
