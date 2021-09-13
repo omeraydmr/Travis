@@ -1,4 +1,4 @@
-package com.omeraydmr.travis;
+package com.omeraydmr.travis.view;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 import android.Manifest;
 import android.content.Context;
@@ -26,8 +28,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.omeraydmr.travis.R;
 import com.omeraydmr.travis.databinding.ActivityMapsBinding;
 import com.omeraydmr.travis.model.Place;
+import com.omeraydmr.travis.roomdb.PlaceDao;
+import com.omeraydmr.travis.roomdb.PlaceDb;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
@@ -38,6 +43,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locationListener;
     SharedPreferences sharedPreferences;
     boolean info;
+    PlaceDb placeDb;
+    PlaceDao placeDao;
+    Double selectedLatitude, selectedLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         sharedPreferences = this.getSharedPreferences("com.omeraydmr.travis", MODE_PRIVATE);
         info = false;
+
+        placeDb = Room.databaseBuilder(getApplicationContext(),PlaceDb.class, "Places").build();
+        placeDao = placeDb.PlaceDao();
+
+        selectedLatitude = 0.0;
+        selectedLongitude = 0.0;
     }
 
     /**
@@ -70,6 +84,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapLongClickListener(this);
+
+        binding.saveButton.setEnabled(false);
 
 
         //casting
@@ -151,5 +167,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.clear();
 
         mMap.addMarker(new MarkerOptions().position(latLng));
+
+        selectedLatitude = latLng.latitude;
+        selectedLongitude = latLng.longitude;
+
+        binding.saveButton.setEnabled(true);
+    }
+
+    public void save (View view) {
+
+        Place place = new Place(binding.placeNameText.getText().toString(), selectedLatitude, selectedLongitude);
+        placeDao.insert(place);
+    }
+
+    public void delete(View view) {
+
     }
 }

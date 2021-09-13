@@ -16,7 +16,7 @@
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent"
-        tools:context=".MapsActivity" />
+        tools:context=".view.MapsActivity" />
 
     <EditText
         android:id="@+id/placeNameText"
@@ -37,21 +37,27 @@
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="40dp"
         android:layout_marginBottom="20dp"
+        android:onClick="save"
         android:text="SAVE"
         map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toStartOf="@+id/deleteButton"
+        map:layout_constraintHorizontal_bias="0.5"
         map:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="20dp"
+        android:onClick="delete"
         android:text="DELETE"
         map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toEndOf="parent" />
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="0.5"
+        map:layout_constraintStart_toEndOf="@+id/saveButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
